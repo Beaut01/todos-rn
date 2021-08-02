@@ -1,17 +1,16 @@
 import React from 'react'
-import {Dimensions, View, Modal, Alert, StyleSheet} from "react-native";
+import {Dimensions, View, Modal, Alert, StyleSheet, FlatList} from "react-native";
 import {ModalListItem} from "./ModalListItem";
 import {ModalInput} from "./ModalInput";
 
 interface ModalListProps{
     visible: boolean,
-    onDismiss: any
+    onDismiss: any,
+    onAddList: any,
+    lists: any[]
 }
 
-export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss}) => {
-
-
-
+export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss, onAddList, lists}) => {
     return(
         <Modal
             animationType='fade'
@@ -25,10 +24,8 @@ export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss}) => {
             <View style={styles.modalBottom}>
                 <View style={styles.modalView}>
                     <View style={styles.modalListItems}>
-                        <ModalListItem />
-                        <ModalListItem />
-                        <ModalListItem />
-                        <ModalInput onDismiss={onDismiss} />
+                        <FlatList data={lists} renderItem={({item}) => <ModalListItem list={item} />} />
+                        <ModalInput onDismiss={onDismiss} onAddList={onAddList} />
                     </View>
                 </View>
             </View>

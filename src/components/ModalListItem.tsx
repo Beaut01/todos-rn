@@ -1,12 +1,23 @@
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Ionicons} from "@expo/vector-icons";
 
-export const ModalListItem: React.FC = () => {
+interface ListProps{
+    id: number,
+    title: string
+}
+
+interface ModalListItemProps{
+    list: ListProps
+}
+
+export const ModalListItem: React.FC<ModalListItemProps> = ({list}) => {
     return(
         <View style={styles.container}>
-            <Text style={{fontSize: 25, marginRight: 'auto'}}>Семья</Text>
-            <Ionicons name='trash-outline' size={30} color='#B22222'/>
+            <Text style={{fontSize: 25, marginRight: 'auto'}}>{list.title}</Text>
+            <TouchableOpacity activeOpacity={0.5}>
+                <Ionicons name='trash-outline' size={30} color='#B22222'/>
+            </TouchableOpacity>
         </View>
     )
 }

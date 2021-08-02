@@ -19,3 +19,20 @@ export interface SetLoading{
 }
 
 export type ListsAction = SetLists | SetLoading
+
+export interface LoadingPayload{
+    payload: boolean
+}
+
+export interface SetListsPayload{
+    items: any[]
+}
+
+
+export interface PostListProps{
+    title: string
+}
+
+export interface DeleteListProps{
+    id: number
+}

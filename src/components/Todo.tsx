@@ -1,33 +1,22 @@
 import React from 'react'
-import {View, StyleSheet, Text, CheckBox} from "react-native";
-import { List } from 'react-native-paper'
+import {View, Text, CheckBox, StyleSheet} from "react-native";
 
-export const Todo: React.FC = () => {
+interface TodoProps{
+    id: number,
+    text: string,
+    checked: boolean,
+}
+
+export const Todo: React.FC<TodoProps> = ({id, text, checked}) => {
     const [isSelected, setIsSelected] = React.useState(false)
-    const [expanded, setExpanded] = React.useState(false)
-
-    const handlePress = () => setExpanded(!expanded)
 
     return(
-        <View style={styles.wrapp}>
-            <Text style={styles.title}>Семья</Text>
-            <View style={styles.container}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={setIsSelected}
-                />
-                <Text style={styles.text}>Помыть посуду</Text>
-            </View>
-            <View style={styles.container}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={setIsSelected}
-                />
-                <Text style={styles.text}>Помыть посуду</Text>
-            </View>
-            <List.Accordion title='Завершённые'>
-                <List.Item title='Убраться' left={props => <List.Icon icon='checkmarker'/>}/>
-            </List.Accordion>
+        <View style={styles.container}>
+            <CheckBox
+                value={checked}
+                onValueChange={setIsSelected}
+            />
+            <Text style={styles.text}>{text}</Text>
         </View>
     )
 }
@@ -38,14 +27,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingVertical: 10
-    },
-    wrapp: {
-        paddingHorizontal: 20,
-        marginTop: 20
-    },
-    title: {
-        fontSize: 20,
-        color: 'gray'
     },
     text: {
         marginLeft: '5%',

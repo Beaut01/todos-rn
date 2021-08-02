@@ -22,7 +22,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation}) => {
     })
 
     return(
-        <View >
+        <View style={styles.wrapper}>
             <TextInput
                 value={value}
                 onChangeText={text => setValue(text)}
@@ -30,6 +30,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation}) => {
                 style={styles.input}
             />
             <View style={styles.container}>
+                <Text style={styles.title}>Категория</Text>
                 <View>
 
                 </View>
@@ -59,5 +60,9 @@ const styles = StyleSheet.create({
     radio: {
         color: 'blue',
         paddingVertical: 10
+    },
+    wrapper:{
+        flex: 1,
+        backgroundColor: '#fff'
     }
 })

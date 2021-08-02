@@ -3,17 +3,28 @@ import { TextInput, View, StyleSheet } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
 interface ModalInputProps{
-    onDismiss: any
+    onDismiss: any,
+    onAddList: any
 }
 
-export const ModalInput: React.FC<ModalInputProps> = ({ onDismiss }) => {
+export const ModalInput: React.FC<ModalInputProps> = ({ onDismiss, onAddList }) => {
+    const [value, onChangeValue] = React.useState('')
+
+    const handleAddList = (value: string) => {
+        onAddList(value)
+        onDismiss()
+        onChangeValue('')
+    }
+
     return(
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder='Новая категория'
+                value={value}
+                onChangeText={text => onChangeValue(text)}
             />
-            <Ionicons name='add' size={30} onPress={onDismiss}/>
+            <Ionicons name='add' size={30} onPress={() => handleAddList(value)}/>
         </View>
     )
 }
