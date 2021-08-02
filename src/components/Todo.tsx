@@ -20,7 +20,7 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
       return(
           <TouchableOpacity activeOpacity={0.5} onPress={() => toRefactor(id, listId, text)} >
               <View style={styles.leftAction}>
-                  <Ionicons name='pencil-outline' size={35} />
+                  <Ionicons name='pencil-outline' size={35} style={{marginTop: 8}} />
               </View>
           </TouchableOpacity>
       )
@@ -30,7 +30,7 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
         return(
             <TouchableOpacity activeOpacity={0.5} onLongPress={() => onDeleteTodo(listId.toString(), id.toString())}>
                 <View >
-                    <Ionicons name='trash-outline' size={30} color='#B22222' />
+                    <Ionicons name='trash-outline' size={30} color='#B22222' style={{marginTop: 8}} />
                 </View>
             </TouchableOpacity>
         )
@@ -45,6 +45,7 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
                 <View style={styles.container}>
                     <RadioButton
                         value='12'
+                        onPress={() => onCompleteTodo(listId.toString(), id.toString(), text)}
                     />
                     <Text style={styles.text}>{text}</Text>
                 </View>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, View, StyleSheet } from "react-native";
+import {TextInput, View, StyleSheet, Pressable} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
 interface ModalInputProps{
@@ -24,7 +24,9 @@ export const ModalInput: React.FC<ModalInputProps> = ({ onDismiss, onAddList }) 
                 value={value}
                 onChangeText={text => onChangeValue(text)}
             />
-            <Ionicons name='add' size={30} onPress={() => handleAddList(value)}/>
+            <Pressable disabled={value === '' ? true : false} onPress={() => handleAddList(value)}>
+                <Ionicons name='add' size={30} />
+            </Pressable>
         </View>
     )
 }

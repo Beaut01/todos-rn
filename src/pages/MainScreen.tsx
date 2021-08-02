@@ -5,7 +5,7 @@ import { TodoList } from '../components/TodoList'
 import {ModalList} from "../components/ModalList";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {fetchLists, postList, deleteList, deleteTodo, completeTodo} from "../redux/actions/lists";
+import {fetchLists, postList, deleteList, deleteTodo, completeTodo, unCompleteTodo} from "../redux/actions/lists";
 import {DeleteListProps, DeleteTodoProps, PostListProps} from "../redux/types";
 import {Fab} from "../components/Fab";
 
@@ -76,6 +76,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         dispatch(completeTodo(listId, todoId, text))
     }
 
+    const handleUnCompleteTodo = (listId: string, todoId: string, text: string) => {
+        dispatch(unCompleteTodo(listId, todoId, text))
+    }
+
     const openModal = () => {
         setVisible(!visible)
     }
@@ -95,9 +99,21 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
             <FlatList
                 data={lists}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({item}) => <TodoList list={item} onDeleteTodo={handleDeleteTodo} toRefactorList={toRefactorList} toRefactor={toRefactor} onCompleteTodo={handleCompleteTodo}/>}
+                renderItem={({item}) => <TodoList
+                    list={item}
+                    onDeleteTodo={handleDeleteTodo}
+                    toRefactorList={toRefactorList}
+                    toRefactor={toRefactor}
+                    onCompleteTodo={handleCompleteTodo}
+                    unCompleteTodo={handleUnCompleteTodo}
+                />}
             />
-            <ModalList visible={visible} onDismiss={() => setVisible(false)} onDeleteList={handleDeleteList} onAddList={addList} lists={lists} />
+            <ModalList
+                visible={visible}
+                onDismiss={() => setVisible(false)}
+                onDeleteList={handleDeleteList}
+                onAddList={addList} lists={lists}
+            />
             <Fab toAddScreen={toAddScreen} />
         </View>
 

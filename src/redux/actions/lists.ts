@@ -98,3 +98,13 @@ export const patchList = (listId: string, title: string) => async (dispatch: Dis
         })
     })
 }
+
+export const unCompleteTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: false})
+    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+        dispatch({
+            type: ListsActionTypes.SET_LISTS,
+            payload: data
+        })
+    })
+}

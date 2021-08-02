@@ -24,7 +24,7 @@ export const RefactorList: React.FC<RefactorListProps> = ({navigation, route}) =
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handlePatchList(listId, value)} >
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handlePatchList(listId, value)} disabled={value === ''} >
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )

@@ -28,7 +28,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleAddTodo(checked, value)}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleAddTodo(checked, value)} disabled={value === ''}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )

@@ -30,7 +30,11 @@ export const RefactorTodoScreen: React.FC<RefactorTodoScreenProps> = ({route, na
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleRefactorTodo(listId.toString(), todoId.toString(), value)}>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={() => handleRefactorTodo(listId.toString(), todoId.toString(), value)}
+                    disabled={value === ''}
+                >
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )
