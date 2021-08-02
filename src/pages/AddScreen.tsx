@@ -1,20 +1,33 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList} from 'react-native'
 import {Ionicons} from "@expo/vector-icons";
-import { RadioButton } from "react-native-paper";
+import {CategoryAdd} from "../components/CategoryAdd";
+import {useTypedSelector} from "../hooks/typedSelector";
+import {useDispatch} from "react-redux";
+import {postTodo} from "../redux/actions/lists";
 
 interface AddScreenProps{
     navigation: any
 }
 
 export const AddScreen: React.FC<AddScreenProps> = ({navigation}) => {
+    const dispatch = useDispatch()
     const [value, setValue] = React.useState('')
-    const [checked, setChecked] = React.useState('first')
+    const [checked, setChecked] = React.useState('12')
+
+    const { lists } = useTypedSelector(store => store.lists)
+
+    const handleAddTodo = (id: string, text: string) => {
+        dispatch(postTodo(id, text))
+        setValue('')
+        setChecked('12')
+        navigation.navigate('Main')
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleAddTodo(checked, value)}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )
@@ -31,9 +44,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation}) => {
             />
             <View style={styles.container}>
                 <Text style={styles.title}>Категория</Text>
-                <View>
-
-                </View>
+                <FlatList data={lists} renderItem={({item}) => <CategoryAdd list={item} checked={checked} setChecked={setChecked} /> } keyExtractor={item => item.id.toString()} />
             </View>
         </View>
     )
@@ -55,11 +66,7 @@ const styles = StyleSheet.create({
     title: {
         color: 'gray',
         fontSize: 20,
-        padding: 5
-    },
-    radio: {
-        color: 'blue',
-        paddingVertical: 10
+        paddingVertical: 5
     },
     wrapper:{
         flex: 1,

@@ -17,10 +17,10 @@ interface List{
 
 interface ListProps{
     list: List,
-    onDelete: any
+    onDeleteTodo: any
 }
 
-export const TodoList: React.FC<ListProps> = ({ list, onDelete }) => {
+export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo }) => {
 
     const [expanded, setExpanded] = React.useState(false)
 
@@ -31,10 +31,10 @@ export const TodoList: React.FC<ListProps> = ({ list, onDelete }) => {
 
     return(
         <View style={styles.wrapp}>
-            <Text style={styles.title} onPress={() => onDelete(list.id.toString())}>{list.title}</Text>
-            <FlatList data={unchecked} renderItem={({item}) => <Todo {...item}  /> } />
+            <Text style={styles.title} >{list.title}</Text>
+            <FlatList data={unchecked} renderItem={({item}) => <Todo {...item} listId={list.id} onDeleteTodo={onDeleteTodo} /> } keyExtractor={item => item.id.toString()} />
             <List.Accordion title='Завершённые'>
-                <FlatList data={checked} renderItem={({item}) => <List.Item title={item.text} left={props => <List.Icon icon='check'/>}/>} />
+                <FlatList data={checked} keyExtractor={item => item.id.toString()} renderItem={({item}) => <List.Item title={item.text} left={props => <List.Icon icon='check'/>}/>} />
             </List.Accordion>
         </View>
     )

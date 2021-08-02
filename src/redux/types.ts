@@ -36,3 +36,13 @@ export interface PostListProps{
 export interface DeleteListProps{
     id: number
 }
+
+export interface PostTodoProps{
+    id: string,
+    text: string
+}
+
+export interface DeleteTodoProps{
+    listId: string,
+    todoId: string
+}

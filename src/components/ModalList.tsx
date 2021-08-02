@@ -7,10 +7,11 @@ interface ModalListProps{
     visible: boolean,
     onDismiss: any,
     onAddList: any,
-    lists: any[]
+    lists: any[],
+    onDeleteList: any
 }
 
-export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss, onAddList, lists}) => {
+export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss, onAddList, lists, onDeleteList}) => {
     return(
         <Modal
             animationType='fade'
@@ -24,7 +25,7 @@ export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss, onAddLi
             <View style={styles.modalBottom}>
                 <View style={styles.modalView}>
                     <View style={styles.modalListItems}>
-                        <FlatList data={lists} renderItem={({item}) => <ModalListItem list={item} />} />
+                        <FlatList data={lists} keyExtractor={item => item.id.toString()} renderItem={({item}) => <ModalListItem list={item} onDeleteList={onDeleteList} />} />
                         <ModalInput onDismiss={onDismiss} onAddList={onAddList} />
                     </View>
                 </View>

@@ -1,12 +1,12 @@
 import React from 'react'
-import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
+import {Text, View, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TodoList } from '../components/TodoList'
 import {ModalList} from "../components/ModalList";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {fetchLists, postList, deleteList} from "../redux/actions/lists";
-import {DeleteListProps, PostListProps} from "../redux/types";
+import {fetchLists, postList, deleteList, deleteTodo} from "../redux/actions/lists";
+import {DeleteListProps, DeleteTodoProps, PostListProps} from "../redux/types";
 import {Fab} from "../components/Fab";
 
 interface MainScreenProps{
@@ -17,11 +17,11 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
     const dispatch = useDispatch()
     const [visible, setVisible] = React.useState(false)
 
+    const { lists } = useTypedSelector(store => store.lists)
+
     React.useEffect(() => {
         dispatch(fetchLists())
     }, [dispatch])
-
-    const { lists } = useTypedSelector(store => store.lists)
 
     console.log(lists)
 
@@ -29,8 +29,28 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         dispatch(postList(value))
     }
 
+    const handleDeleteTodo = (listId: DeleteTodoProps, todoId: DeleteTodoProps) => {
+        dispatch(deleteTodo(listId, todoId))
+    }
+
     const handleDeleteList = (id: DeleteListProps) => {
-        dispatch(deleteList(id))
+        Alert.alert(
+            "Удаление категории.",
+            "Точно хотите удалить эту категорию?",
+            [
+                {
+                    text: "Закрыть",
+                    style: "cancel"
+                },
+                { text: "Удалить",
+                    style: 'destructive',
+                    onPress() {
+                        dispatch(deleteList(id))
+                    }
+                }
+            ],
+            { cancelable: true }
+        )
     }
 
     const toAddScreen = () => {
@@ -55,10 +75,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         <View style={styles.container}>
             <FlatList
                 data={lists}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => <TodoList list={item} onDelete={handleDeleteList}/>}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => <TodoList list={item} onDeleteTodo={handleDeleteTodo}/>}
             />
-            <ModalList visible={visible} onDismiss={() => setVisible(false)} onAddList={addList} lists={lists} />
+            <ModalList visible={visible} onDismiss={() => setVisible(false)} onDeleteList={handleDeleteList} onAddList={addList} lists={lists} />
             <Fab toAddScreen={toAddScreen} />
         </View>
 
