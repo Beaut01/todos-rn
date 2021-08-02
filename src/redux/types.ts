@@ -46,3 +46,9 @@ export interface DeleteTodoProps{
     listId: string,
     todoId: string
 }
+
+export interface PatchTodoProps{
+    listId: string,
+    todoId: string,
+    text: string
+}

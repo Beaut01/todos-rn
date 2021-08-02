@@ -5,7 +5,7 @@ import { TodoList } from '../components/TodoList'
 import {ModalList} from "../components/ModalList";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {fetchLists, postList, deleteList, deleteTodo} from "../redux/actions/lists";
+import {fetchLists, postList, deleteList, deleteTodo, completeTodo} from "../redux/actions/lists";
 import {DeleteListProps, DeleteTodoProps, PostListProps} from "../redux/types";
 import {Fab} from "../components/Fab";
 
@@ -57,6 +57,25 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         navigation.navigate('Add')
     }
 
+    const toRefactor = (todoId: number, listId: number, text: string) => {
+        navigation.navigate('RefactorTodo', {
+            todoId: todoId,
+            listId: listId,
+            text: text
+        })
+    }
+
+    const toRefactorList = (listId: string, title: string) => {
+        navigation.navigate('RefactorList', {
+            listId: listId,
+            title: title
+        })
+    }
+
+    const handleCompleteTodo = (listId: string, todoId: string, text: string) => {
+        dispatch(completeTodo(listId, todoId, text))
+    }
+
     const openModal = () => {
         setVisible(!visible)
     }
@@ -76,7 +95,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
             <FlatList
                 data={lists}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({item}) => <TodoList list={item} onDeleteTodo={handleDeleteTodo}/>}
+                renderItem={({item}) => <TodoList list={item} onDeleteTodo={handleDeleteTodo} toRefactorList={toRefactorList} toRefactor={toRefactor} onCompleteTodo={handleCompleteTodo}/>}
             />
             <ModalList visible={visible} onDismiss={() => setVisible(false)} onDeleteList={handleDeleteList} onAddList={addList} lists={lists} />
             <Fab toAddScreen={toAddScreen} />

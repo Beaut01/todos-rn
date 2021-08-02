@@ -4,7 +4,7 @@ import {
     DeleteTodoProps,
     ListsAction,
     ListsActionTypes,
-    LoadingPayload,
+    LoadingPayload, PatchTodoProps,
     PostListProps,
     SetListsPayload
 } from "../types";
@@ -61,6 +61,36 @@ export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<
 
 export const deleteTodo = (listId: DeleteTodoProps, todoId: DeleteTodoProps) => async (dispatch: Dispatch<ListsAction>) => {
     await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`)
+    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+        dispatch({
+            type: ListsActionTypes.SET_LISTS,
+            payload: data
+        })
+    })
+}
+
+export const patchTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: false})
+    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+        dispatch({
+            type: ListsActionTypes.SET_LISTS,
+            payload: data
+        })
+    })
+}
+
+export const completeTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: true})
+    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+        dispatch({
+            type: ListsActionTypes.SET_LISTS,
+            payload: data
+        })
+    })
+}
+
+export const patchList = (listId: string, title: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}`, {title: title})
     await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,

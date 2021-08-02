@@ -1,34 +1,36 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList} from 'react-native'
-import {Ionicons} from "@expo/vector-icons";
-import {CategoryAdd} from "../components/CategoryAdd";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {postTodo} from "../redux/actions/lists";
+import {FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {CategoryAdd} from "../components/CategoryAdd";
+import {Ionicons} from "@expo/vector-icons";
+import {patchTodo} from "../redux/actions/lists";
 
-interface AddScreenProps{
+interface RefactorTodoScreenProps{
     navigation: any,
     route: any
 }
 
-export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
+export const RefactorTodoScreen: React.FC<RefactorTodoScreenProps> = ({route, navigation}) => {
     const dispatch = useDispatch()
-    const [value, setValue] = React.useState('')
-    const [checked, setChecked] = React.useState('12')
+    const listId = route.params?.listId
+    const todoId = route.params?.todoId
+    const text = route.params?.text
+
+    const [checked, setChecked] = React.useState(listId)
+    const [value, setValue] = React.useState(text)
 
     const { lists } = useTypedSelector(store => store.lists)
 
-    const handleAddTodo = (id: string, text: string) => {
-        dispatch(postTodo(id, text))
-        setValue('')
-        setChecked('12')
+    const handleRefactorTodo = (listId: string, todoId: string, text: string) => {
+        dispatch(patchTodo(listId, todoId, text))
         navigation.navigate('Main')
     }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleAddTodo(checked, value)}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleRefactorTodo(listId.toString(), todoId.toString(), value)}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )

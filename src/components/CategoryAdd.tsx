@@ -21,7 +21,7 @@ export const CategoryAdd: React.FC<categoryAddProps> = ({checked, setChecked, li
                 <RadioButton
                     value={list.id.toString()}
                     color='#1E90FF'
-                    status={checked === list.id.toString() ? 'checked' : 'unchecked'}
+                    status={checked == list.id.toString() ? 'checked' : 'unchecked'}
                     onPress={() => setChecked(list.id.toString())}
                 />
             </View>
