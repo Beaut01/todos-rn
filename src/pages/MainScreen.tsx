@@ -1,22 +1,28 @@
 import React from 'react'
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native'
-import { Button } from "react-native-paper";
+import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { Todo } from '../components/Todo'
+import {ModalList} from "../components/ModalList";
 
 interface MainScreenProps{
     navigation: any
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
+    const [visible, setVisible] = React.useState(false)
 
     const handleAddTodo = () => {
         navigation.navigate('Add')
     }
 
+    const openModal = () => {
+        setVisible(!visible)
+    }
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity onPress={() => handleAddTodo()}>
+                <TouchableOpacity onPress={() => openModal()}>
                     <Ionicons name='grid-outline' size={30} style={styles.cubes} />
                 </TouchableOpacity>
             )
@@ -25,21 +31,19 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
 
     return(
         <View style={styles.container}>
-            <Text>MainScreen</Text>
-            <Button mode='contained' onPress={() => handleAddTodo()} >
-                Нажми
-            </Button>
+            <Todo />
+            <ModalList visible={visible} onDismiss={() => setVisible(false)} />
         </View>
+
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: 'center'
-    },
     cubes: {
         marginRight: 15
+    },
+    container:{
+        flex: 1,
+        backgroundColor: '#fff'
     }
 })
