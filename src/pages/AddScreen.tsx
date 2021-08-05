@@ -13,22 +13,41 @@ interface AddScreenProps{
 
 export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
     const dispatch = useDispatch()
-    const [value, setValue] = React.useState('')
-    const [checked, setChecked] = React.useState('12')
-
     const { lists } = useTypedSelector(store => store.lists)
+    const [value, setValue] = React.useState('')
+    const [checked, setChecked] = React.useState(lists[0].id.toString())
+    const [validation, setValidation] = React.useState({
+        isValidInput: true,
+        isValidCategory: true
+    })
 
     const handleAddTodo = (id: string, text: string) => {
         dispatch(postTodo(id, text))
         setValue('')
-        setChecked('12')
+        setChecked('0')
         navigation.navigate('Main')
+    }
+
+    const handleValid = (checked: string, val: string) => {
+        if( val === '' && checked === '0'){
+            setValidation({
+                ...validation,
+                isValidCategory: false,
+                isValidInput: false
+            })
+        }else{
+            setValidation({
+                isValidInput: true,
+                isValidCategory: true
+            })
+            handleAddTodo(checked, val)
+        }
     }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleAddTodo(checked, value)} disabled={value === ''}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleValid(checked, value)}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )
@@ -43,9 +62,15 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
                 placeholder='Название задачи'
                 style={styles.input}
             />
+            { validation.isValidInput ? null :
+                <Text style={styles.error}>Поле не может быть пустым</Text>
+            }
             <View style={styles.container}>
                 <Text style={styles.title}>Категория</Text>
                 <FlatList data={lists} renderItem={({item}) => <CategoryAdd list={item} checked={checked} setChecked={setChecked} /> } keyExtractor={item => item.id.toString()} />
+                { validation.isValidCategory ? null :
+                    <Text style={styles.errorCategory}>Нужно выбрать категорию</Text>
+                }
             </View>
         </View>
     )
@@ -72,5 +97,15 @@ const styles = StyleSheet.create({
     wrapper:{
         flex: 1,
         backgroundColor: '#fff'
+    },
+    error: {
+        color: 'red',
+        fontSize: 17,
+        paddingVertical: 2,
+        paddingHorizontal: 20
+    },
+    errorCategory:{
+        color: 'red',
+        fontSize: 17
     }
 })

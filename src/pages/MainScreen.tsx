@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, View, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TodoList } from '../components/TodoList'
 import {ModalList} from "../components/ModalList";

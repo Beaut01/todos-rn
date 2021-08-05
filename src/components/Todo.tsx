@@ -28,7 +28,7 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
 
     const rightActions = () => {
         return(
-            <TouchableOpacity activeOpacity={0.5} onLongPress={() => onDeleteTodo(listId.toString(), id.toString())}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => onDeleteTodo(listId.toString(), id.toString())}>
                 <View >
                     <Ionicons name='trash-outline' size={30} color='#B22222' style={{marginTop: 8}} />
                 </View>
@@ -40,6 +40,8 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
         <Swipeable 
             renderLeftActions={leftActions}
             renderRightActions={rightActions}
+            overshootFriction={9}
+            friction={2}
         >
             <TouchableOpacity activeOpacity={0.6} onPress={() => onCompleteTodo(listId.toString(), id.toString(), text)} >
                 <View style={styles.container}>
@@ -68,6 +70,6 @@ const styles = StyleSheet.create({
     },
     leftAction: {
         flex: 1,
-        alignItems: 'center'
+        justifyContent: 'center',
     }
 })

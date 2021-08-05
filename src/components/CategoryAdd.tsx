@@ -8,7 +8,7 @@ interface ListProps{
 }
 
 interface categoryAddProps{
-    checked: string | null,
+    checked: string ,
     setChecked: any,
     list: ListProps
 }
