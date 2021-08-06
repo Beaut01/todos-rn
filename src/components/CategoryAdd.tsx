@@ -1,17 +1,8 @@
 import React from 'react'
 import {View, StyleSheet, TouchableOpacity} from "react-native";
 import { RadioButton, Text} from "react-native-paper";
+import {categoryAddProps} from "../types";
 
-interface ListProps{
-    title: string,
-    id: number
-}
-
-interface categoryAddProps{
-    checked: string ,
-    setChecked: any,
-    list: ListProps
-}
 
 export const CategoryAdd: React.FC<categoryAddProps> = ({checked, setChecked, list}) => {
     return (

@@ -1,4 +1,4 @@
-import {ListsAction, ListsActionTypes, ListsState, Todo} from "../types";
+import {ListsAction, ListsActionTypes, ListsState, todo} from "../types";
 
 const initialState: ListsState = {
     lists: [],
@@ -37,7 +37,7 @@ export const listsReducer = ( state = initialState, action: ListsAction): ListsS
                 ...state,
                 lists: state.lists.map(list => {
                     if(list.id == action.payload.listId){
-                        list.todos.map((todo: Todo) => {
+                        list.todos.map((todo: todo) => {
                             if(todo.id.toString() == action.payload.todoId){
                                 todo.text = action.payload.text
                             }
@@ -53,7 +53,7 @@ export const listsReducer = ( state = initialState, action: ListsAction): ListsS
                 ...state,
                 lists: state.lists.map(list => {
                     if(list.id == action.payload.listId){
-                        list.todos.map((todo: Todo) => {
+                        list.todos.map((todo: todo) => {
                             if(todo.id.toString() ===action.payload.todoId){
                                 todo.checked = action.payload.checked
                             }

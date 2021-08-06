@@ -1,16 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Ionicons} from "@expo/vector-icons";
-
-interface ListProps{
-    id: number,
-    title: string
-}
-
-interface ModalListItemProps{
-    list: ListProps,
-    onDeleteList: any
-}
+import {ModalListItemProps} from "../types";
 
 export const ModalListItem: React.FC<ModalListItemProps> = ({list, onDeleteList}) => {
     return(

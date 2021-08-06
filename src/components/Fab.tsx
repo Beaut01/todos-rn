@@ -1,10 +1,7 @@
 import React from 'react'
 import {Pressable, View, StyleSheet} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-
-interface FabProps{
-    toAddScreen: any
-}
+import {FabProps} from "../types";
 
 export const Fab: React.FC<FabProps> = ({toAddScreen}) => {
     return(

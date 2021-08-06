@@ -3,27 +3,8 @@ import {View, StyleSheet, Text, FlatList, TouchableOpacity, TouchableNativeFeedb
 import { List } from 'react-native-paper'
 import { Todo } from "./Todo";
 import {Ionicons} from "@expo/vector-icons";
-
-interface TodosProps{
-    id: number,
-    text: string,
-    checked: boolean,
-    created_at: string
-}
-
-interface List{
-    title: string,
-    id: number,
-    todos: TodosProps[]
-}
-
-interface ListProps{
-    list: List,
-    onDeleteTodo: any,
-    toRefactor: any,
-    onCompleteTodo: any,
-    toRefactorList: any,
-}
+import {todo} from '../redux/types'
+import {ListProps} from "../types";
 
 export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo, toRefactor, onCompleteTodo, toRefactorList }) => {
     const [visible, setVisible] = React.useState(false)

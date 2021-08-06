@@ -2,14 +2,8 @@ import React from 'react'
 import {FlatList, Modal, OpaqueColorValue, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {ModalListItem} from "./ModalListItem";
 import {ModalInput} from "./ModalInput";
+import {ModalListProps} from "../types";
 
-interface ModalListProps{
-    visible: boolean,
-    onDismiss: any,
-    onAddList: any,
-    lists: any[],
-    onDeleteList: any
-}
 
 export const ModalList: React.FC<ModalListProps> = ({visible, onDismiss, onAddList, lists, onDeleteList}) => {
     return(

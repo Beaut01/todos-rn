@@ -3,16 +3,8 @@ import {View, Text, StyleSheet, TouchableOpacity, Animated} from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import { RadioButton } from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
+import {TodoProps} from "../types";
 
-interface TodoProps{
-    id: number,
-    text: string,
-    checked: boolean,
-    listId: number,
-    onDeleteTodo: any,
-    toRefactor: any,
-    onCompleteTodo: any
-}
 
 export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTodo, toRefactor, onCompleteTodo}) => {
     const [checkedValue, setCheckedValue] = React.useState(checked)
@@ -25,7 +17,7 @@ export const Todo: React.FC<TodoProps> = ({id, text, checked, listId, onDeleteTo
         })
 
       return(
-          <TouchableOpacity activeOpacity={0.5} onPress={() => toRefactor(id, listId, text)} >
+          <TouchableOpacity activeOpacity={0.5} onPress={() => toRefactor(id.toString(), listId.toString(), text)} >
               <Animated.View style={[styles.leftAction, {transform: [{scale}]}]}>
                   <Ionicons name='pencil-outline' size={35} style={{marginTop: 8}} />
               </Animated.View>

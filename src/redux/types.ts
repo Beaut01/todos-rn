@@ -85,7 +85,7 @@ export interface DeleteTodoProps{
     todoId: string
 }
 
-export interface Todo{
+export interface todo{
     checked: boolean,
     created_at: string,
     id: number,

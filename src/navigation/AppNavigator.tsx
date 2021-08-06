@@ -6,7 +6,13 @@ import { AddScreen} from "../pages/AddScreen";
 import { MainScreen} from "../pages/MainScreen";
 import {RefactorList} from "../pages/RefactorList";
 
-const Stack = createStackNavigator()
+type RootStackParamList = {
+    Main: undefined,
+    Add: {listId: number, todoId: number, text: string},
+    RefactorList: {listId: string, title: string}
+}
+
+const Stack = createStackNavigator<RootStackParamList>()
 
 export default function AppNavigator() {
     return(

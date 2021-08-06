@@ -25,7 +25,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
 
     console.log(lists)
 
-    const addList = (value: PostListProps) => {
+    const addList = (value: string) => {
         dispatch(postList(value))
     }
 
@@ -33,7 +33,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         dispatch(deleteTodo(listId, todoId))
     }
 
-    const handleDeleteList = (id: DeleteListProps) => {
+    const handleDeleteList = (id: number) => {
         Alert.alert(
             "Удаление категории.",
             "Точно хотите удалить эту категорию?",
@@ -57,7 +57,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         navigation.navigate('Add')
     }
 
-    const toRefactor = (todoId: number, listId: number, text: string) => {
+    const toRefactor = (todoId: string, listId: string, text: string) => {
         navigation.navigate('Add', {
             todoId: todoId,
             listId: listId,

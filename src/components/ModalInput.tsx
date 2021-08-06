@@ -1,11 +1,7 @@
 import React from 'react'
 import {TextInput, View, StyleSheet, Pressable, Text} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-
-interface ModalInputProps{
-    onDismiss: any,
-    onAddList: any
-}
+import {ModalInputProps} from "../types";
 
 export const ModalInput: React.FC<ModalInputProps> = ({ onDismiss, onAddList }) => {
     const [value, onChangeValue] = React.useState('')
