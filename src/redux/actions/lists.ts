@@ -1,6 +1,6 @@
-import axios from "axios";
-import {DeleteListProps, ListsAction, ListsActionTypes, LoadingPayload, PostListProps, SetListsPayload} from "../types";
+import { ListsAction, ListsActionTypes, LoadingPayload, SetListsPayload} from "../types";
 import {Dispatch} from "redux";
+import {service} from "../../service";
 
 export const setLoading = (payload: LoadingPayload) => ({
     type: ListsActionTypes.SET_LOADING,
@@ -13,7 +13,7 @@ export const setLists = (items: SetListsPayload) => ({
 })
 
 export const fetchLists = () => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+    await service.fetch().then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,
             payload: data
@@ -21,9 +21,9 @@ export const fetchLists = () => async (dispatch: Dispatch<ListsAction>) => {
     })
 }
 
-export const postList = (value: PostListProps) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.post('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list', {title: value})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+export const postList = (value: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await service.postList(value)
+    await service.fetch().then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,
             payload: data
@@ -31,8 +31,8 @@ export const postList = (value: PostListProps) => async (dispatch: Dispatch<List
     })
 }
 
-export const deleteList = (id: DeleteListProps) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${id}`)
+export const deleteList = (id: number) => async (dispatch: Dispatch<ListsAction>) => {
+    await service.deleteList(id)
     dispatch({
         type: ListsActionTypes.DELETE_LIST,
         payload: id
@@ -40,8 +40,8 @@ export const deleteList = (id: DeleteListProps) => async (dispatch: Dispatch<Lis
 }
 
 export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.post(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${id}/todo`, {"text": text, checked: false})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+    await service.postTodo(id, text)
+    await service.fetch().then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,
             payload: data
@@ -50,8 +50,8 @@ export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<
 }
 
 export const deleteTodo = (listId: string, todoId: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`)
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+    await service.deleteTodo(listId, todoId)
+    await service.fetch().then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,
             payload: data
@@ -60,7 +60,7 @@ export const deleteTodo = (listId: string, todoId: string) => async (dispatch: D
 }
 
 export const patchTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: false})
+    await service.patchTodo(listId, todoId, text)
     dispatch({
         type: ListsActionTypes.PATCH_TODO,
         payload: {
@@ -72,7 +72,7 @@ export const patchTodo = (listId: string, todoId: string, text: string) => async
 }
 
 export const completeTodo = (listId: string, todoId: string, text: string, checked: boolean) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: checked})
+    await service.completeTodo(listId, todoId, text, checked)
     dispatch({
         type: ListsActionTypes.COMPLETE_TODO,
         payload: {
@@ -84,7 +84,7 @@ export const completeTodo = (listId: string, todoId: string, text: string, check
 }
 
 export const patchList = (listId: string, title: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}`, {title: title})
+    await service.patchList(listId, title)
     dispatch({
         type: ListsActionTypes.PATCH_LIST,
         payload:{
@@ -95,9 +95,9 @@ export const patchList = (listId: string, title: string) => async (dispatch: Dis
 }
 
 export const patchWitchCategory = (listId: string, todoId: string, text: string, initialListId: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${initialListId}/todo/${todoId}`)
-    await axios.post(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo`, {"text": text, checked: false})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+    await service.deleteTodo(initialListId, todoId)
+    await service.postTodo(listId, text)
+    await service.fetch().then(({data}) => {
         dispatch({
             type: ListsActionTypes.SET_LISTS,
             payload: data

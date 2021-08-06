@@ -15,7 +15,7 @@ export enum ListsActionTypes{
 
 export interface deleteList{
     type: ListsActionTypes.DELETE_LIST,
-    payload: DeleteListProps
+    payload: number
 }
 
 export interface patchTodo{

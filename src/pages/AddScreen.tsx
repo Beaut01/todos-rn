@@ -41,7 +41,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
         navigation.navigate('Main')
     }
 
-    const handleRefactorTodoCat = (listId: string, todoId: string, text: string, initialListId: string) => {
+    const handleRefactorTodoCat = (listId: string, todoId: string, text: string , initialListId: string) => {
         dispatch(patchWitchCategory(listId, todoId, text, initialListId))
         navigation.navigate('Main')
     }
