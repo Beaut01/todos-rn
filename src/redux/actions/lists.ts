@@ -93,3 +93,14 @@ export const patchList = (listId: string, title: string) => async (dispatch: Dis
         }
     })
 }
+
+export const patchWitchCategory = (listId: string, todoId: string, text: string, initialListId: string) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${initialListId}/todo/${todoId}`)
+    await axios.post(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo`, {"text": text, checked: false})
+    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
+        dispatch({
+            type: ListsActionTypes.SET_LISTS,
+            payload: data
+        })
+    })
+}

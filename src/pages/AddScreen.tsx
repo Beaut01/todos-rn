@@ -4,7 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {CategoryAdd} from "../components/CategoryAdd";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {patchTodo, postTodo} from "../redux/actions/lists";
+import {patchTodo, patchWitchCategory, postTodo} from "../redux/actions/lists";
 
 interface AddScreenProps{
     navigation: any,
@@ -41,6 +41,11 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
         navigation.navigate('Main')
     }
 
+    const handleRefactorTodoCat = (listId: string, todoId: string, text: string, initialListId: string) => {
+        dispatch(patchWitchCategory(listId, todoId, text, initialListId))
+        navigation.navigate('Main')
+    }
+
     const changeText = (text: string) => {
         setValidation({
             ...validation,
@@ -49,21 +54,30 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
         setValue(text)
     }
 
-    const handleValid = (checked: string, val: string, todoId: string) => {
+    const handleValid = (checked: string, val: string, todoId: string, initialListId: string) => {
         if(text){
+            if(checked !== initialListId){
+                setValidation({
+                    ...validation,
+                    isValidRefactor: true
+                })
+                handleRefactorTodoCat(checked, todoId, val, initialListId)
+            }
             if(val === text){
                 setValidation({
                     ...validation,
                     isValidRefactor: false
                 })
-            }else{
+            }
+            else{
                 setValidation({
                     ...validation,
                     isValidRefactor: true
                 })
                 handleRefactorTodo(checked, todoId, val)
             }
-        }else{
+        }
+        else{
             if( val === ''){
                 setValidation({
                     ...validation,
@@ -82,7 +96,7 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleValid(checked, value, todoID.toString())}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleValid(checked, value, todoID.toString(), initialChecked.toString())}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )
