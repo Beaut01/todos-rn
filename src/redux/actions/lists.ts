@@ -1,13 +1,5 @@
 import axios from "axios";
-import {
-    DeleteListProps,
-    DeleteTodoProps,
-    ListsAction,
-    ListsActionTypes,
-    LoadingPayload, PatchTodoProps,
-    PostListProps,
-    SetListsPayload
-} from "../types";
+import {DeleteListProps, ListsAction, ListsActionTypes, LoadingPayload, PostListProps, SetListsPayload} from "../types";
 import {Dispatch} from "redux";
 
 export const setLoading = (payload: LoadingPayload) => ({
@@ -41,11 +33,9 @@ export const postList = (value: PostListProps) => async (dispatch: Dispatch<List
 
 export const deleteList = (id: DeleteListProps) => async (dispatch: Dispatch<ListsAction>) => {
     await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${id}`)
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
-        dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
-        })
+    dispatch({
+        type: ListsActionTypes.DELETE_LIST,
+        payload: id
     })
 }
 
@@ -59,7 +49,7 @@ export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<
     })
 }
 
-export const deleteTodo = (listId: DeleteTodoProps, todoId: DeleteTodoProps) => async (dispatch: Dispatch<ListsAction>) => {
+export const deleteTodo = (listId: string, todoId: string) => async (dispatch: Dispatch<ListsAction>) => {
     await axios.delete(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`)
     await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
         dispatch({
@@ -71,40 +61,35 @@ export const deleteTodo = (listId: DeleteTodoProps, todoId: DeleteTodoProps) => 
 
 export const patchTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
     await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: false})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
-        dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
-        })
+    dispatch({
+        type: ListsActionTypes.PATCH_TODO,
+        payload: {
+            listId: listId,
+            todoId: todoId,
+            text: text
+        }
     })
 }
 
-export const completeTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: true})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
-        dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
-        })
+export const completeTodo = (listId: string, todoId: string, text: string, checked: boolean) => async (dispatch: Dispatch<ListsAction>) => {
+    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: checked})
+    dispatch({
+        type: ListsActionTypes.COMPLETE_TODO,
+        payload: {
+            listId: listId,
+            todoId: todoId,
+            checked: checked
+        }
     })
 }
 
 export const patchList = (listId: string, title: string) => async (dispatch: Dispatch<ListsAction>) => {
     await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}`, {title: title})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
-        dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
-        })
-    })
-}
-
-export const unCompleteTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await axios.patch(`http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list/${listId}/todo/${todoId}`, {text: text, checked: false})
-    await axios.get('http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list').then(({data}) => {
-        dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
-        })
+    dispatch({
+        type: ListsActionTypes.PATCH_LIST,
+        payload:{
+            id: listId,
+            title: title
+        }
     })
 }

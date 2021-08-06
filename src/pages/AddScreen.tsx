@@ -4,7 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {CategoryAdd} from "../components/CategoryAdd";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {postTodo} from "../redux/actions/lists";
+import {patchTodo, postTodo} from "../redux/actions/lists";
 
 interface AddScreenProps{
     navigation: any,
@@ -12,13 +12,21 @@ interface AddScreenProps{
 }
 
 export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
-    const dispatch = useDispatch()
+    const listId = route.params?.listId
+    const todoId = route.params?.todoId
+    const text = route.params?.text
     const { lists } = useTypedSelector(store => store.lists)
-    const [value, setValue] = React.useState('')
-    const [checked, setChecked] = React.useState(lists[0].id.toString())
+
+    const initialText = text ? text : ''
+    const initialChecked = listId ? listId.toString() : lists[0].id.toString()
+    const todoID = todoId ? todoId : '12'
+
+    const dispatch = useDispatch()
+    const [value, setValue] = React.useState(initialText)
+    const [checked, setChecked] = React.useState(initialChecked)
     const [validation, setValidation] = React.useState({
         isValidInput: true,
-        isValidCategory: true
+        isValidRefactor: true
     })
 
     const handleAddTodo = (id: string, text: string) => {
@@ -28,26 +36,53 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
         navigation.navigate('Main')
     }
 
-    const handleValid = (checked: string, val: string) => {
-        if( val === '' && checked === '0'){
-            setValidation({
-                ...validation,
-                isValidCategory: false,
-                isValidInput: false
-            })
+    const handleRefactorTodo = (listId: string, todoId: string, text: string) => {
+        dispatch(patchTodo(listId, todoId, text))
+        navigation.navigate('Main')
+    }
+
+    const changeText = (text: string) => {
+        setValidation({
+            ...validation,
+            isValidInput: true
+        })
+        setValue(text)
+    }
+
+    const handleValid = (checked: string, val: string, todoId: string) => {
+        if(text){
+            if(val === text){
+                setValidation({
+                    ...validation,
+                    isValidRefactor: false
+                })
+            }else{
+                setValidation({
+                    ...validation,
+                    isValidRefactor: true
+                })
+                handleRefactorTodo(checked, todoId, val)
+            }
         }else{
-            setValidation({
-                isValidInput: true,
-                isValidCategory: true
-            })
-            handleAddTodo(checked, val)
+            if( val === ''){
+                setValidation({
+                    ...validation,
+                    isValidInput: false
+                })
+            }else{
+                setValidation({
+                    ...validation,
+                    isValidInput: true
+                })
+                handleAddTodo(checked, val)
+            }
         }
     }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => handleValid(checked, value)}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => handleValid(checked, value, todoID.toString())}>
                     <Ionicons name='checkmark-outline' size={30} style={styles.checkmark} />
                 </TouchableOpacity>
             )
@@ -58,19 +93,20 @@ export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
         <View style={styles.wrapper}>
             <TextInput
                 value={value}
-                onChangeText={text => setValue(text)}
+                onChangeText={text => changeText(text)}
                 placeholder='Название задачи'
                 style={styles.input}
             />
-            { validation.isValidInput ? null :
+            { validation.isValidInput  ? null :
                 <Text style={styles.error}>Поле не может быть пустым</Text>
+            }
+            {
+                validation.isValidRefactor ? null :
+                <Text style={styles.error}>Название задачи должно отличаться от предыдущего</Text>
             }
             <View style={styles.container}>
                 <Text style={styles.title}>Категория</Text>
                 <FlatList data={lists} renderItem={({item}) => <CategoryAdd list={item} checked={checked} setChecked={setChecked} /> } keyExtractor={item => item.id.toString()} />
-                { validation.isValidCategory ? null :
-                    <Text style={styles.errorCategory}>Нужно выбрать категорию</Text>
-                }
             </View>
         </View>
     )

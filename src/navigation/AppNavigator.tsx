@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { AddScreen} from "../pages/AddScreen";
 import { MainScreen} from "../pages/MainScreen";
-import { RefactorTodoScreen } from "../pages/RefactorTodoScreen";
 import {RefactorList} from "../pages/RefactorList";
 
 const Stack = createStackNavigator()
@@ -23,13 +22,6 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name='Add'
                     component={AddScreen}
-                    options={{
-                        title: ''
-                    }}
-                />
-                <Stack.Screen
-                    name='RefactorTodo'
-                    component={RefactorTodoScreen}
                     options={{
                         title: ''
                     }}

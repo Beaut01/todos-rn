@@ -3,8 +3,6 @@ import {View, StyleSheet, Text, FlatList, TouchableOpacity, TouchableNativeFeedb
 import { List } from 'react-native-paper'
 import { Todo } from "./Todo";
 import {Ionicons} from "@expo/vector-icons";
-import {TodoChecked} from "./TodoChecked";
-
 
 interface TodosProps{
     id: number,
@@ -25,10 +23,9 @@ interface ListProps{
     toRefactor: any,
     onCompleteTodo: any,
     toRefactorList: any,
-    unCompleteTodo: any
 }
 
-export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo, toRefactor, onCompleteTodo, toRefactorList, unCompleteTodo }) => {
+export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo, toRefactor, onCompleteTodo, toRefactorList }) => {
     const [visible, setVisible] = React.useState(false)
 
     const checked = list.todos.filter(t => t.checked )
@@ -61,11 +58,12 @@ export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo, toRefactor, 
                         { visible && <FlatList
                             data={checked}
                             keyExtractor={item => item.id.toString()}
-                            renderItem={({item}) => <TodoChecked
+                            renderItem={({item}) => <Todo
                                 {...item}
-                                onDeleteTodo={onDeleteTodo}
-                                unCompleteTodo={unCompleteTodo}
                                 listId={list.id}
+                                onDeleteTodo={onDeleteTodo}
+                                toRefactor={toRefactor}
+                                onCompleteTodo={onCompleteTodo}
                             />}
                         />}
                     </View>

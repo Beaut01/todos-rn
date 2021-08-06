@@ -5,8 +5,8 @@ import { TodoList } from '../components/TodoList'
 import {ModalList} from "../components/ModalList";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
-import {fetchLists, postList, deleteList, deleteTodo, completeTodo, unCompleteTodo} from "../redux/actions/lists";
-import {DeleteListProps, DeleteTodoProps, PostListProps} from "../redux/types";
+import {fetchLists, postList, deleteList, deleteTodo, completeTodo} from "../redux/actions/lists";
+import {DeleteListProps, PostListProps} from "../redux/types";
 import {Fab} from "../components/Fab";
 
 interface MainScreenProps{
@@ -29,7 +29,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         dispatch(postList(value))
     }
 
-    const handleDeleteTodo = (listId: DeleteTodoProps, todoId: DeleteTodoProps) => {
+    const handleDeleteTodo = (listId: string, todoId: string) => {
         dispatch(deleteTodo(listId, todoId))
     }
 
@@ -58,7 +58,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
     }
 
     const toRefactor = (todoId: number, listId: number, text: string) => {
-        navigation.navigate('RefactorTodo', {
+        navigation.navigate('Add', {
             todoId: todoId,
             listId: listId,
             text: text
@@ -72,12 +72,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
         })
     }
 
-    const handleCompleteTodo = (listId: string, todoId: string, text: string) => {
-        dispatch(completeTodo(listId, todoId, text))
-    }
-
-    const handleUnCompleteTodo = (listId: string, todoId: string, text: string) => {
-        dispatch(unCompleteTodo(listId, todoId, text))
+    const handleCompleteTodo = (listId: string, todoId: string, text: string, checked: boolean) => {
+        dispatch(completeTodo(listId, todoId, text, checked))
     }
 
     const openModal = () => {
@@ -105,7 +101,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
                     toRefactorList={toRefactorList}
                     toRefactor={toRefactor}
                     onCompleteTodo={handleCompleteTodo}
-                    unCompleteTodo={handleUnCompleteTodo}
                 />}
             />
             <ModalList
