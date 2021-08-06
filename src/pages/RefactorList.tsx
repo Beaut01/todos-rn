@@ -3,13 +3,9 @@ import {TextInput, View, StyleSheet, TouchableOpacity, Text} from "react-native"
 import {Ionicons} from "@expo/vector-icons";
 import {useDispatch} from "react-redux";
 import {patchList} from "../redux/actions/lists";
+import {RefactorProps} from "../navigation/AppNavigator";
 
-interface RefactorListProps{
-    navigation: any,
-    route: any
-}
-
-export const RefactorList: React.FC<RefactorListProps> = ({navigation, route}) => {
+export const RefactorList: React.FC<RefactorProps> = ({navigation, route}) => {
     const dispatch = useDispatch()
     const title = route.params?.title
     const listId = route.params?.listId

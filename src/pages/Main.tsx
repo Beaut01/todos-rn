@@ -6,14 +6,10 @@ import {ModalList} from "../components/ModalList";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
 import {fetchLists, postList, deleteList, deleteTodo, completeTodo} from "../redux/actions/lists";
-import {DeleteListProps, PostListProps} from "../redux/types";
 import {Fab} from "../components/Fab";
+import {MainProps} from "../navigation/AppNavigator";
 
-interface MainScreenProps{
-    navigation: any,
-}
-
-export const MainScreen: React.FC<MainScreenProps> = ({navigation}) => {
+export const Main: React.FC<MainProps> = ({navigation}) => {
     const dispatch = useDispatch()
     const [visible, setVisible] = React.useState(false)
 

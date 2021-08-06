@@ -5,14 +5,9 @@ import {CategoryAdd} from "../components/CategoryAdd";
 import {useTypedSelector} from "../hooks/typedSelector";
 import {useDispatch} from "react-redux";
 import {patchTodo, patchWitchCategory, postTodo} from "../redux/actions/lists";
+import {AddProps} from "../navigation/AppNavigator";
 
-
-interface AddScreenProps{
-    navigation: any,
-    route: any
-}
-
-export const AddScreen: React.FC<AddScreenProps> = ({navigation, route}) => {
+export const Add: React.FC<AddProps> = ({navigation, route}) => {
     const listId = route.params?.listId
     const todoId = route.params?.todoId
     const text = route.params?.text

@@ -1,16 +1,21 @@
 import React from 'react'
-import { NavigationContainer} from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import {NavigationContainer} from '@react-navigation/native'
+import {createStackNavigator, StackScreenProps} from '@react-navigation/stack'
 
-import { AddScreen} from "../pages/AddScreen";
-import { MainScreen} from "../pages/MainScreen";
+import { Add} from "../pages/Add";
+import { Main} from "../pages/Main";
 import {RefactorList} from "../pages/RefactorList";
 
 type RootStackParamList = {
-    Main: undefined,
-    Add: {listId: number, todoId: number, text: string},
+    Main: undefined
+    Add: {listId: string , todoId: string, text: string} | undefined,
     RefactorList: {listId: string, title: string}
 }
+
+export type MainProps = StackScreenProps<RootStackParamList, 'Main'>
+export type AddProps = StackScreenProps<RootStackParamList, 'Add'>
+export type RefactorProps = StackScreenProps<RootStackParamList, 'RefactorList'>
+
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -20,14 +25,14 @@ export default function AppNavigator() {
             <Stack.Navigator>
                 <Stack.Screen
                     name='Main'
-                    component={MainScreen}
+                    component={Main}
                     options={{
                         title: 'Задачи'
                     }}
                 />
                 <Stack.Screen
                     name='Add'
-                    component={AddScreen}
+                    component={Add}
                     options={{
                         title: ''
                     }}
