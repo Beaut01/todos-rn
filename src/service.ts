@@ -1,28 +1,30 @@
 import axios from 'axios'
+// @ts-ignore
+import {API_URL} from '@env'
 
-axios.defaults.baseURL = 'http://mobile-dev.oblakogroup.ru/candidate/EgorKorovin/list'
+axios.defaults.baseURL = API_URL
 
 export const service = {
     fetch: () =>
-        axios.get('/'),
+        axios.get('/list'),
     postList: (value: string) =>
-        axios.post('/', {title: value}),
+        axios.post('/list', {title: value}),
     deleteList: (id: number) =>
-        axios.delete(`/${id}`),
+        axios.delete(`/list/${id}`),
     postTodo: (id: string, text: string) =>
-        axios.post(`/${id}/todo`, {text: text, checked: false}),
+        axios.post(`/list/${id}/todo`, {text: text, checked: false}),
     deleteTodo: (listId: string, todoId: string) =>
-        axios.delete(`/${listId}/todo/${todoId}`),
+        axios.delete(`/list/${listId}/todo/${todoId}`),
     patchTodo: (listId: string, todoId: string, text: string) =>
         axios.patch(
-        `/${listId}/todo/${todoId}`,
+        `/list/${listId}/todo/${todoId}`,
         {text: text, checked: false}),
     completeTodo: (listId: string, todoId: string, text: string, checked: boolean) =>
         axios.patch(
-            `/${listId}/todo/${todoId}`,
+            `/list/${listId}/todo/${todoId}`,
             {text: text, checked: checked}),
     patchList: (listId: string, title: string) =>
         axios.patch(
-            `/${listId}`,
+            `/list/${listId}`,
             {title: title})
 }
