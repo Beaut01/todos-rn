@@ -1,6 +1,13 @@
+export interface List{
+    title: string,
+    id: number,
+    todos: todo[]
+}
+
 export interface ListsState{
-    lists: any[],
+    lists: List[],
     loading: boolean,
+    test: any
 }
 
 export enum ListsActionTypes{
@@ -10,12 +17,24 @@ export enum ListsActionTypes{
     PATCH_LIST = 'PATCH_LIST',
     DELETE_TODO = 'DELETE_TODO',
     PATCH_TODO = 'PATCH_TODO',
-    COMPLETE_TODO = 'COMPLETE_TODO'
+    COMPLETE_TODO = 'COMPLETE_TODO',
+    POST_LIST = 'POST_LIST',
+    POST_TODO = 'POST_TODO'
 }
 
 export interface deleteList{
     type: ListsActionTypes.DELETE_LIST,
     payload: number
+}
+
+export interface postTodo{
+    type: ListsActionTypes.POST_TODO,
+    payload: any
+}
+
+export interface postList{
+    type: ListsActionTypes.POST_LIST,
+    payload: List
 }
 
 export interface patchTodo{
@@ -62,7 +81,7 @@ export interface completeTodo{
     }
 }
 
-export type ListsAction = setLists | setLoading | deleteList | patchList | deleteTodo | patchTodo | completeTodo
+export type ListsAction = setLists | setLoading | deleteList | patchList | deleteTodo | patchTodo | completeTodo | postList | postTodo
 
 export interface LoadingPayload{
     payload: boolean

@@ -1,4 +1,4 @@
-import { ListsAction, ListsActionTypes, LoadingPayload, SetListsPayload} from "../types";
+import {ListsAction, ListsActionTypes, LoadingPayload, SetListsPayload} from "../types";
 import {Dispatch} from "redux";
 import {service} from "../../service";
 
@@ -22,11 +22,10 @@ export const fetchLists = () => async (dispatch: Dispatch<ListsAction>) => {
 }
 
 export const postList = (value: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.postList(value)
-    await service.fetch().then(({data}) => {
+    await service.postList(value).then((res) => {
         dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
+            type: ListsActionTypes.POST_LIST,
+            payload: res.data
         })
     })
 }
@@ -40,11 +39,10 @@ export const deleteList = (id: number) => async (dispatch: Dispatch<ListsAction>
 }
 
 export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.postTodo(id, text)
-    await service.fetch().then(({data}) => {
+    await service.postTodo(id, text).then((res) => {
         dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
+            type: ListsActionTypes.POST_TODO,
+            payload: res.data
         })
     })
 }

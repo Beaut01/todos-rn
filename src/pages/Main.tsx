@@ -14,12 +14,13 @@ export const Main: React.FC<MainProps> = ({navigation}) => {
     const [visible, setVisible] = React.useState(false)
 
     const { lists } = useTypedSelector(store => store.lists)
+    const { test } = useTypedSelector(store => store.lists)
 
     React.useEffect(() => {
         dispatch(fetchLists())
     }, [dispatch])
 
-    console.log(lists)
+    console.log(test)
 
     const addList = (value: string) => {
         dispatch(postList(value))

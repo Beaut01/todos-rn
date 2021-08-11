@@ -9,8 +9,8 @@ import {ListProps} from "../types";
 export const TodoList: React.FC<ListProps> = ({ list, onDeleteTodo, toRefactor, onCompleteTodo, toRefactorList }) => {
     const [visible, setVisible] = React.useState(false)
 
-    const checked = list.todos.filter(t => t.checked )
-    const unchecked = list.todos.filter(t => !t.checked)
+    const checked = list?.todos.filter(t => t.checked )
+    const unchecked = list?.todos.filter(t => !t.checked)
 
     const iconName = visible ? 'chevron-up-outline' : 'chevron-down-outline'
 

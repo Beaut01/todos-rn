@@ -1,8 +1,10 @@
 import axios from 'axios'
 // @ts-ignore
 import {API_URL} from '@env'
+import {List} from './redux/types'
 
 axios.defaults.baseURL = API_URL
+
 
 export const service = {
     fetch: () =>
