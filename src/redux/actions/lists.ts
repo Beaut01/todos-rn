@@ -48,57 +48,50 @@ export const postTodo = (id: string, text: string) => async (dispatch: Dispatch<
 }
 
 export const deleteTodo = (listId: string, todoId: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.deleteTodo(listId, todoId)
-    await service.fetch().then(({data}) => {
+    await service.deleteTodo(listId, todoId).then(() => {
         dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
+            type: ListsActionTypes.DELETE_TODO,
+            payload: {
+                listId: listId,
+                todoId: todoId
+            }
         })
     })
 }
 
 export const patchTodo = (listId: string, todoId: string, text: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.patchTodo(listId, todoId, text)
-    dispatch({
-        type: ListsActionTypes.PATCH_TODO,
-        payload: {
-            listId: listId,
-            todoId: todoId,
-            text: text
-        }
+    await service.patchTodo(listId, todoId, text).then((res) => {
+        dispatch({
+            type: ListsActionTypes.PATCH_TODO,
+            payload: res.data
+        })
     })
 }
 
 export const completeTodo = (listId: string, todoId: string, text: string, checked: boolean) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.completeTodo(listId, todoId, text, checked)
-    dispatch({
-        type: ListsActionTypes.COMPLETE_TODO,
-        payload: {
-            listId: listId,
-            todoId: todoId,
-            checked: checked
-        }
+    await service.completeTodo(listId, todoId, text, checked).then((res) => {
+        dispatch({
+            type: ListsActionTypes.COMPLETE_TODO,
+            payload: res.data
+        })
     })
 }
 
 export const patchList = (listId: string, title: string) => async (dispatch: Dispatch<ListsAction>) => {
-    await service.patchList(listId, title)
-    dispatch({
-        type: ListsActionTypes.PATCH_LIST,
-        payload:{
-            id: listId,
-            title: title
-        }
+    await service.patchList(listId, title).then((res) => {
+        dispatch({
+            type: ListsActionTypes.PATCH_LIST,
+            payload: res.data
+        })
     })
 }
 
 export const patchWitchCategory = (listId: string, todoId: string, text: string, initialListId: string) => async (dispatch: Dispatch<ListsAction>) => {
     await service.deleteTodo(initialListId, todoId)
-    await service.postTodo(listId, text)
-    await service.fetch().then(({data}) => {
+    await service.postTodo(listId, text).then((res) => {
         dispatch({
-            type: ListsActionTypes.SET_LISTS,
-            payload: data
+            type: ListsActionTypes.PATCH_CAT_TODO,
+            payload: res.data
         })
     })
 }

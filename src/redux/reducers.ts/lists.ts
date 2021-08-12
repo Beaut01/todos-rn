@@ -1,4 +1,4 @@
-import {ListsAction, ListsActionTypes, ListsState, todo} from "../types";
+import {ListsAction, ListsActionTypes, ListsState} from "../types";
 
 const initialState: ListsState = {
     lists: [],
@@ -25,57 +25,40 @@ export const listsReducer = ( state = initialState, action: ListsAction): ListsS
         case ListsActionTypes.PATCH_LIST:{
             return {
                 ...state,
-                lists: state.lists.map(list => {
-                    if( list.id.toString() === action.payload.id ){
-                        list.title = action.payload.title
-                    }
-                    return list
-                })
+                lists: state.lists.map(list => list.id === action.payload.id ? {...list, title: action.payload.title} : list)
             }
         }
         case ListsActionTypes.PATCH_TODO:{
+            const list = state.lists.find(list => list.id === action.payload.list_id)
+            // @ts-ignore
+            const newTodos = list.todos.map(todo => todo.id === action.payload.id ? {...action.payload} : todo)
+
             return {
                 ...state,
-                lists: state.lists.map(list => {
-                    if(list.id.toString() == action.payload.listId){
-                        list.todos.map((todo: todo) => {
-                            if(todo.id.toString() == action.payload.todoId){
-                                todo.text = action.payload.text
-                            }
-                            return todo
-                        })
-                    }
-                    return list
-                })
+                lists: state.lists.map(list => list.id === action.payload.list_id ? {...list, todos: newTodos} : list)
             }
         }
-        // case ListsActionTypes.COMPLETE_TODO:{
-        //     return {
-        //         ...state,
-        //         lists: state.lists.map(list => {
-        //             if(list.id.toString() == action.payload.listId){
-        //                 list.todos.map((todo: todo) => {
-        //                     if(todo.id.toString() ===action.payload.todoId){
-        //                         todo.checked = action.payload.checked
-        //                     }
-        //                     return todo
-        //                 })
-        //             }
-        //             return list
-        //         })
-        //     }
-        // }
-        // case ListsActionTypes.DELETE_TODO:{
-        //     const list = state.lists.find(list => list.id.toString() === action.payload.listId)
-        //     // @ts-ignore
-        //     const todos = list.todos;
-        //     const newTodos = todos.filter(todo => todo.id.toString() !== action.payload.todoId)
-        //     const newLists = state.lists.map(list => list.id.toString() === action.payload.listId ? {...list, todos: newTodos} : list)
-        //     return {
-        //         ...state,
-        //         lists: newLists
-        //     }
-        // }
+        case ListsActionTypes.COMPLETE_TODO:{
+            const list = state.lists.find(list => list.id === action.payload.list_id)
+            // @ts-ignore
+            const newTodos = list.todos.map(todo => todo.id === action.payload.id ? {...action.payload} : todo)
+
+            return {
+                ...state,
+                lists: state.lists.map(list => list.id === action.payload.list_id ? {...list, todos: newTodos} : list)
+            }
+        }
+        case ListsActionTypes.DELETE_TODO:{
+            const list = state.lists.find(list => list.id.toString() === action.payload.listId)
+            // @ts-ignore
+            const todos = list.todos;
+            const newTodos = todos.filter(todo => todo.id.toString() !== action.payload.todoId)
+            const newLists = state.lists.map(list => list.id.toString() === action.payload.listId ? {...list, todos: newTodos} : list)
+            return {
+                ...state,
+                lists: newLists
+            }
+        }
         case ListsActionTypes.POST_LIST: {
             return {
                 ...state,
@@ -83,6 +66,19 @@ export const listsReducer = ( state = initialState, action: ListsAction): ListsS
             }
         }
         case ListsActionTypes.POST_TODO:{
+            const list = state.lists.find(list => list.id === action.payload.list_id)
+            const todos = list?.todos
+
+            // @ts-ignore
+            const newTodos = [...todos, action.payload]
+            const newLists = state.lists.map(list => list.id === action.payload.list_id ? {...list, todos: newTodos} : list)
+
+            return {
+                ...state,
+                lists: newLists
+            }
+        }
+        case ListsActionTypes.PATCH_CAT_TODO:{
             const list = state.lists.find(list => list.id === action.payload.list_id)
             const todos = list?.todos
 

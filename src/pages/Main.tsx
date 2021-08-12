@@ -20,7 +20,7 @@ export const Main: React.FC<MainProps> = ({navigation}) => {
         dispatch(fetchLists())
     }, [dispatch])
 
-    console.log(test)
+    console.log(lists)
 
     const addList = (value: string) => {
         dispatch(postList(value))

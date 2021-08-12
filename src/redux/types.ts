@@ -19,12 +19,25 @@ export enum ListsActionTypes{
     PATCH_TODO = 'PATCH_TODO',
     COMPLETE_TODO = 'COMPLETE_TODO',
     POST_LIST = 'POST_LIST',
-    POST_TODO = 'POST_TODO'
+    POST_TODO = 'POST_TODO',
+    PATCH_CAT_TODO = 'PATCH_CAT_TODO'
 }
 
 export interface deleteList{
     type: ListsActionTypes.DELETE_LIST,
     payload: number
+}
+
+export interface patchTodoCat{
+    type: ListsActionTypes.PATCH_CAT_TODO,
+    payload: {
+        checked: boolean,
+        created_at: string,
+        id: number,
+        list_id: number,
+        text: string,
+        updated_at: string
+    }
 }
 
 export interface postTodo{
@@ -40,17 +53,24 @@ export interface postList{
 export interface patchTodo{
     type: ListsActionTypes.PATCH_TODO,
     payload: {
-        listId: string,
-        todoId: string,
-        text: string
+        list_id: number,
+        id: number,
+        text: string,
+        checked: boolean,
+        created_at: string,
+        updated_at: string
     }
 }
 
 export interface patchList{
     type: ListsActionTypes.PATCH_LIST,
     payload: {
-        id: string,
-        title: string
+        title: string,
+        id: number,
+        todos: todo[],
+        updated_at: string,
+        candidate_id: number,
+        created_at: string
     }
 }
 
@@ -75,20 +95,23 @@ export interface setLoading{
 export interface completeTodo{
     type: ListsActionTypes.COMPLETE_TODO,
     payload: {
-        listId: string,
-        todoId: string,
-        checked: boolean
+        list_id: number,
+        id: number,
+        text: string,
+        checked: boolean,
+        created_at: string,
+        updated_at: string
     }
 }
 
-export type ListsAction = setLists | setLoading | deleteList | patchList | deleteTodo | patchTodo | completeTodo | postList | postTodo
+export type ListsAction = setLists | setLoading | deleteList | patchList | deleteTodo | patchTodo | completeTodo | postList | postTodo | patchTodoCat
 
 export interface LoadingPayload{
     payload: boolean
 }
 
 export interface SetListsPayload{
-    items: any[]
+    items: todo[]
 }
 
 export interface PostListProps{
